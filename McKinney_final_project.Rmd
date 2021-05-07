@@ -1,8 +1,11 @@
 ---
 title: "Final Project"
 subtitle: "Data Science for Biologists, Spring 2021"
-author: "Your name goes here"
-output: html_document
+author: Dayna McKinney
+output: 
+  html_document:
+    theme: cerulean
+    highlight: pygments
 editor_options: 
   chunk_output_type: console
 ---
@@ -12,62 +15,134 @@ editor_options:
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = TRUE, include = TRUE)
 
 # Load all libraries you use HERE:
+library(tidyverse)
 ```
 
 <br><br>
 
 ## Introduction
 
-```{r read-examine-data}
+> This data set contains information on the World Cup forecasts from 2018. I chose this data set because I thought it would be interesting to investigate the statistics on the world cup season of 2018. In addition, this was a data set that stuck out to me that I thought I would take interest in learning more about.
 
+[World cup forecasts](https://projects.fivethirtyeight.com/soccer-api/international/2018/wc_forecasts.csv)
+
+```{r read-examine-data}
+worldcup <- readr::read_csv('https://projects.fivethirtyeight.com/soccer-api/international/2018/wc_forecasts.csv')
+
+dplyr::glimpse(worldcup)
 ```
 
 <br><br>
 
 ## Question 1
 
-#### REPLACE TEXT WITH YOUR QUESTION. Your question should literally be a level-4 header.
+#### How many groups made it to the quarter finals?
 
 ### Methods
+```{r}
+worldcup %>%
+  select(make_quarters, group) %>%
+  mutate(make_quarters = ifelse(
+    make_quarters == 1, "yes", "no"),
+    Quarterfinalist = make_quarters) %>%
+  select(-make_quarters) -> worldcup1
 
+ggplot(worldcup1) +
+  aes(y=group, x=Quarterfinalist, color=group) +
+  geom_point(size=3.0) +
+  theme(legend.position = "none") +
+  labs(x= "Quarter Finalists",
+       y="Group",
+    title="Group Quarter Finalists")
+```
 ### Answer
 
-Replace this text with your answer to your question.
+Based on the data, 6 out of the 8 groups made it to the quarter finals.
 
 
 <br><br>
 
 ## Question 2
 
-#### REPLACE TEXT WITH YOUR QUESTION. Your question should literally be a level-4 header.
+#### How many groups made it to the semi finals?
 
 ### Methods
+``` {r}
+worldcup %>%
+  select(make_semis, group) %>%
+  mutate(make_semis = ifelse(
+    make_semis == 1, "yes", "no"),
+    Semifinalist = make_semis) %>%
+  select(-make_semis) -> worldcup2
 
+ggplot(worldcup2) +
+  aes(y=group, x=Semifinalist, color=group) +
+  geom_point(size=3.0) +
+  theme(legend.position = "none") +
+  labs(x= "Semi Finalists",
+       y="Group",
+    title="Group Semi Finalists")
+  
+```
 ### Answer
 
-Replace this text with your answer to your question.
+Based on the data, 3 out of the 8 groups made it to the semi finals.
 
 <br><br>
 
 ## Question 3
 
-#### REPLACE TEXT WITH YOUR QUESTION. Your question should literally be a level-4 header.
+#### How many groups made it to the finals?
 
 ### Methods
+```{r}
+worldcup %>%
+  select(make_final, group) %>%
+  mutate(make_final = ifelse(
+    make_final == 1, "yes", "no"),
+    Finalist = make_final) %>%
+  select(-make_final) -> worldcup3
+
+ggplot(worldcup3) +
+  aes(y=group, x=Finalist, color=group) +
+  geom_point(size=3.0) +
+  theme(legend.position = "none") +
+  labs(x= "Finalists",
+       y="Group",
+    title="Group Finalists")
+
+```
 
 ### Answer
 
-Replace this text with your answer to your question.
+Based on the data, 2 out of the 8 groups made it to the finals. 
 
 
 <br><br>
 
 ## Question 4
 
-#### REPLACE TEXT WITH YOUR QUESTION. Your question should literally be a level-4 header.
+#### Which group won the league?
 
 ### Methods
+```{r}
+worldcup %>%
+  select(win_league, group) %>%
+  mutate(win_league = ifelse(
+    win_league == 1, "yes", "no"),
+    leaguewinner = win_league) %>%
+  select(-win_league) -> worldcup4
+
+ggplot(worldcup4) +
+  aes(y=group, x=leaguewinner, color=group) +
+  geom_point(size=3.0) +
+  theme(legend.position = "none") +
+  labs(x= "League Winner",
+       y="Group",
+    title="League winner")
+
+```
 
 ### Answer
 
-Replace this text with your answer to your question.
+Based on the data, group C won the league.
